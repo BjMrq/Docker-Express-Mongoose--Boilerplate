@@ -1,6 +1,6 @@
-require('./database');
-const { appName, server } = require('./config');
-const { app } = require('./server');
+require('./config/database');
+const { appName, server } = require('./config/variables');
+const { app } = require('./config/server');
 
 
 // Start the app

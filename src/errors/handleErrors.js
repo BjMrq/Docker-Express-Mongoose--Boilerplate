@@ -1,6 +1,8 @@
+const logger = require('../config/logger');
+
 const handleHTTPErrors = (error, res) => {
 
-  console.log('An error occurred: ', error);
+  logger.error(`${error.name} | ${error.message} | stack: ${error.stack}`);
 
   if (error.name === 'ValidationError') {
 

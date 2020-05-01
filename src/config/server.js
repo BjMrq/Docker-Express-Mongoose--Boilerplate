@@ -1,7 +1,7 @@
 const express = require('express');
-const userRouter = require('./api/users');
-const taskRouter = require('./api/tasks');
-const authRouter = require('./api/auth');
+const userRouter = require('../api/users');
+const taskRouter = require('../api/tasks');
+const authRouter = require('../api/auth');
 
 // Create app
 const app = express();

@@ -1,0 +1,13 @@
+@baseUrl = {{$dotenv ROOT_URL}}
+
+############### AUTH ###############
+
+### Login (one)
+POST {{baseUrl}}/login
+Accept: */*
+content-type: application/json
+
+{
+    "email": "greateil3sss@email.com",
+    "password": "super@Diffcultpasssw00rdsuper@Difficultpasssw00rdsuper@Difficultpasssw00rd@"
+}

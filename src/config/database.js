@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const {
   dbHost, dbPort, dbUser, dbPassword
-} = require('./config');
+} = require('./variables');
 
 const connectionUrl = `mongodb://${dbUser}:${dbPassword}@${dbHost}:${dbPort}`;
 

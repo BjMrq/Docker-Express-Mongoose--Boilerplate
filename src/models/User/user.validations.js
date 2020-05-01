@@ -5,7 +5,7 @@ const passwordValidation = (password) => {
 
   const complexityOptions = {
     min             : 8,
-    max             : 30,
+    max             : 80,
     lowerCase       : 1,
     upperCase       : 1,
     numeric         : 1,

@@ -1,0 +1,39 @@
+@baseUrl = {{$dotenv ROOT_URL}}
+
+
+############### USER ###############
+
+### GET users (all)
+GET {{baseUrl}}/users
+Accept: */*
+content-type: application/json
+
+### GET user (one)
+GET {{baseUrl}}/users/5eac847df37452239fb0296b
+Accept: */*
+content-type: application/json
+
+### POST users (create)
+POST {{baseUrl}}/users
+Accept: */*
+content-type: application/json 
+
+{
+    "name": "sample"
+}
+
+### PATCH users (update)
+PATCH {{baseUrl}}/users/5eac847df37452239fb0296b
+Accept: */*
+content-type: application/json 
+
+{
+    "name": "losaasss",
+    "email": "email@gmail.com",
+    "password": "susper@Difsficultpasssw00rd"
+}
+
+### Delete users (destroy)
+DELETE {{baseUrl}}/users/5eaa027790516702c6d8289b
+Accept: */*
+content-type: application/json

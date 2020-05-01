@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
-const { passwordValidation, emailValidation } = require('./validations');
-const { LoginError } = require('./../../errors/errorTypes');
-const { hashPassword, findByCredentials } = require('./credential.utils');
+const { passwordValidation, emailValidation } = require('./user.validations');
+const { hashPassword, findByCredentials, generateAuthToken } = require('./credential.utils');
 
 
 // The schema that define the User model
@@ -36,12 +35,21 @@ const userSchema = new mongoose.Schema({
 
     }
   },
-  age: { type: Number, }
-
+  age   : { type: Number, },
+  tokens: [
+    {
+      token: {
+        type: String, required: true
+      }
+    }
+  ]
 });
 
 // Create a function to find a user depending of the passed credentials
 userSchema.statics.findByCredentials = findByCredentials;
+
+// Create a function to generate a JWT token for the user
+userSchema.methods.generateAuthToken = generateAuthToken;
 
 // Hash the password before saving
 userSchema.pre('save', hashPassword);

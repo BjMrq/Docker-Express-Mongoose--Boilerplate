@@ -1,4 +1,6 @@
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const { jwtToken } = require('../../config/variables');
 const { LoginError } = require('./../../errors/errorTypes');
 
 
@@ -12,6 +14,17 @@ async function hashPassword(next) {
   }
 
   next();
+
+}
+
+async function generateAuthToken() {
+
+  const token = jwt.sign({ _id: this.id.toString() }, jwtToken);
+
+  this.tokens = [ ...this.tokens, { token } ];
+  await this.save();
+
+  return token;
 
 }
 
@@ -40,5 +53,5 @@ async function findByCredentials(credentials) {
 }
 
 module.exports = {
-  hashPassword, findByCredentials
+  hashPassword, findByCredentials, generateAuthToken
 };

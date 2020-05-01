@@ -2,9 +2,13 @@ const Joi = require('@hapi/joi');
 const { ValidationError } = require('../../errors/errorTypes');
 
 const loginSchema = Joi.object({
-  email: Joi.string().email()
+  email: Joi
+    .string()
+    .email()
     .required(),
-  password: Joi.string().required()
+  password: Joi
+    .string()
+    .required()
 });
 
 const validateLoginRequest = async (requestParam) => {

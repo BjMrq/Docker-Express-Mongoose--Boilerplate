@@ -9,11 +9,19 @@ exports.logIn = async ({ body }, res) => {
 
   try {
 
+    // Validate the request body
     const validatedBody = await validateLoginRequest(body);
 
+    // Find the user from the send credentials
     const user = await User.findByCredentials(validatedBody);
 
-    res.send(user);
+    // Generate JWT token
+    const token = await user.generateAuthToken();
+
+    // Send back the token
+    res.send({
+      user, token
+    });
 
   } catch (e) {
 
