@@ -1,6 +1,6 @@
 const handleHTTPErrors = (error, res) => {
 
-  console.log(error);
+  console.log('An error occurred: ', error);
 
   if (error.name === 'ValidationError') {
 
@@ -11,6 +11,12 @@ const handleHTTPErrors = (error, res) => {
   if (error.name === 'NotFoundError') {
 
     res.status(400).send(error.message);
+
+  }
+
+  if (error.name === 'LoginError') {
+
+    res.status(401).send(error.message);
 
   }
 

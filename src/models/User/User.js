@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const { passwordValidation, emailValidation } = require('./validations');
-const { hashPassword } = require('./utils');
+const { LoginError } = require('./../../errors/errorTypes');
+const { hashPassword, findByCredentials } = require('./credential.utils');
+
 
 // The schema that define the User model
 const userSchema = new mongoose.Schema({
@@ -23,6 +25,7 @@ const userSchema = new mongoose.Schema({
   },
   email: {
     type     : String,
+    unique   : true,
     required : true,
     trim     : true,
     lowercase: true,
@@ -37,8 +40,14 @@ const userSchema = new mongoose.Schema({
 
 });
 
-// Hash the password
+// Create a function to find a user depending of the passed credentials
+userSchema.statics.findByCredentials = findByCredentials;
+
+// Hash the password before saving
 userSchema.pre('save', hashPassword);
 
-module.exports = mongoose.model('User', userSchema);
+// Create the model
+const User = mongoose.model('User', userSchema);
+
+module.exports = User;
 

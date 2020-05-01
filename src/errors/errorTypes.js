@@ -20,6 +20,17 @@ class NotFoundError extends Error {
 
 }
 
+class LoginError extends Error {
+
+  constructor() {
+
+    super('Unable to login');
+    this.name = 'LoginError';
+
+  }
+
+}
+
 module.exports = {
-  ValidationError, NotFoundError
+  ValidationError, NotFoundError, LoginError
 };
