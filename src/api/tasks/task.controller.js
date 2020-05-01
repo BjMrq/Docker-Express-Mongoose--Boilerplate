@@ -1,5 +1,8 @@
 
 const Task = require('../../models/Task/Task');
+const { validateCreateUpdateOneRequest } = require('./task.requests');
+const { NotFoundError } = require('../../errors/errorTypes');
+const { handleHTTPErrors } = require('../../errors/handleErrors');
 
 
 exports.getOne = async ({ params }, res) => {
@@ -12,7 +15,7 @@ exports.getOne = async ({ params }, res) => {
 
     if (!task) {
 
-      res.status(404).send();
+      throw new NotFoundError('Task');
 
     }
 
@@ -20,7 +23,7 @@ exports.getOne = async ({ params }, res) => {
 
   } catch (e) {
 
-    res.status(500).send();
+    handleHTTPErrors(e, res);
 
   }
 
@@ -37,7 +40,7 @@ exports.getAll = async (req, res) => {
 
   } catch (e) {
 
-    res.status(500).send(e.message);
+    handleHTTPErrors(e, res);
 
   }
 
@@ -53,7 +56,7 @@ exports.createOne = async ({ body }, res) => {
 
   } catch (e) {
 
-    res.status(500).send(e.message);
+    handleHTTPErrors(e, res);
 
   }
 
@@ -65,23 +68,37 @@ exports.updateOne = async ({ params, body }, res) => {
 
     const { id } = params;
 
-    const task = await Task
-      .findByIdAndUpdate(id, body, {
-        new          : true,
-        runValidators: true,
-      });
+    // Validate the request body
+    const validatedBody = await validateCreateUpdateOneRequest(body);
+
+    // Find the appropriate task
+    const task = await Task.findById(id);
 
     if (!task) {
 
-      res.status(404).send();
+      // If no task is found return a 404
+      throw new NotFoundError('Task');
 
     }
 
+    // Iterate through the task document to update it's fields
+    Object.keys(validatedBody).forEach((updateField) => {
+
+      task[updateField] = validatedBody[updateField];
+
+      return false;
+
+    });
+
+    // Save the task
+    await task.save();
+
+    // And return it
     res.send(task);
 
   } catch (e) {
 
-    res.status(500).send();
+    handleHTTPErrors(e, res);
 
   }
 
@@ -93,11 +110,12 @@ exports.deleteOne = async ({ params }, res) => {
 
     const { id } = params;
 
+    // Find the task and delete it
     const user = await Task.findByIdAndDelete(id);
 
     if (!user) {
 
-      res.status(404).send();
+      throw new NotFoundError('Task');
 
     }
 
@@ -105,7 +123,7 @@ exports.deleteOne = async ({ params }, res) => {
 
   } catch (e) {
 
-    res.status(500).send();
+    handleHTTPErrors(e, res);
 
   }
 

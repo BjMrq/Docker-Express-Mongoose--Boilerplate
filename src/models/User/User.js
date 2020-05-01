@@ -1,7 +1,9 @@
 const mongoose = require('mongoose');
 const { passwordValidation, emailValidation } = require('./validations');
+const { hashPassword } = require('./utils');
 
-module.exports = mongoose.model('User', {
+// The schema that define the User model
+const userSchema = new mongoose.Schema({
 
   name: {
     type    : String,
@@ -14,6 +16,7 @@ module.exports = mongoose.model('User', {
     trim    : true,
     validate(password) {
 
+      // Validate password before hashing
       passwordValidation(password);
 
     }
@@ -25,6 +28,7 @@ module.exports = mongoose.model('User', {
     lowercase: true,
     validate(email) {
 
+      // Validate email
       emailValidation(email);
 
     }
@@ -32,4 +36,9 @@ module.exports = mongoose.model('User', {
   age: { type: Number, }
 
 });
+
+// Hash the password
+userSchema.pre('save', hashPassword);
+
+module.exports = mongoose.model('User', userSchema);
 

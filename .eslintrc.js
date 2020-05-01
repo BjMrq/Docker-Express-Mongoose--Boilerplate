@@ -11,11 +11,6 @@ module.exports = {
     'eslint-plugin',
   ],
   "rules": {
-    "no-trailing-spaces": "warn",
-    "no-empty": "warn",
-    "space-before-blocks": "warn",
-    "no-multiple-empty-lines": "warn",
-    "keyword-spacing": "warn",
     "max-len": [
       "warn",
       {
@@ -32,7 +27,17 @@ module.exports = {
       "warn",
       "single"
     ],
-    // Pading and spacing
+    // Padding and spacing
+    "lines-around-comment": ["warn", { 
+      "beforeBlockComment": true, 
+      "beforeLineComment": true 
+    }],
+    "eol-last": "warn",
+    "no-empty": "warn",
+    "no-multiple-empty-lines": "warn",
+    "keyword-spacing": "warn",
+    "no-trailing-spaces": "warn",
+    "space-before-blocks": "warn",
     "key-spacing": [
       "warn",
       {

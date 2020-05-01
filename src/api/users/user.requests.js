@@ -1,4 +1,5 @@
 const Joi = require('@hapi/joi');
+const { ValidationError } = require('../../errors/errorTypes');
 
 const createOneSchema = Joi.object({
   email: Joi.string().email()
@@ -15,7 +16,7 @@ const validateCreateUpdateOneRequest = async (requestParam) => {
 
   } catch (error) {
 
-    throw new Error(error.details[0].message);
+    throw new ValidationError(error.details[0].message);
 
   }
 

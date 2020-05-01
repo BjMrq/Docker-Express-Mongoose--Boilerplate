@@ -1,6 +1,8 @@
 
 const User = require('../../models/User/User');
 const { validateCreateUpdateOneRequest } = require('./user.requests');
+const { NotFoundError } = require('../../errors/errorTypes');
+const { handleHTTPErrors } = require('../../errors/handleErrors');
 
 
 exports.getOne = async ({ params }, res) => {
@@ -13,7 +15,7 @@ exports.getOne = async ({ params }, res) => {
 
     if (!user) {
 
-      res.status(404).send();
+      throw new NotFoundError('User');
 
     }
 
@@ -21,7 +23,7 @@ exports.getOne = async ({ params }, res) => {
 
   } catch (e) {
 
-    res.status(500).send();
+    handleHTTPErrors(e, res);
 
   }
 
@@ -38,7 +40,7 @@ exports.getAll = async (req, res) => {
 
   } catch (e) {
 
-    res.status(500).send(e.message);
+    handleHTTPErrors(e, res);
 
   }
 
@@ -48,15 +50,18 @@ exports.createOne = async ({ body }, res) => {
 
   try {
 
+    // Validate the request body
     const validatedBody = await validateCreateUpdateOneRequest(body);
 
+    // Create new user
     const newUser = await new User(validatedBody).save();
 
+    // And send it back
     res.status(201).send(newUser);
 
   } catch (e) {
 
-    res.status(500).send(e.message);
+    handleHTTPErrors(e, res);
 
   }
 
@@ -68,25 +73,37 @@ exports.updateOne = async ({ params, body }, res) => {
 
     const { id } = params;
 
+    // Validate the request body
     const validatedBody = await validateCreateUpdateOneRequest(body);
 
-    const user = await User
-      .findByIdAndUpdate(id, validatedBody, {
-        new          : true,
-        runValidators: true,
-      });
+    // Find the appropriate user
+    const user = await User.findById(id);
 
     if (!user) {
 
-      res.status(404).send();
+      // If no user is found return a 404
+      throw new NotFoundError('User');
 
     }
 
+    // Iterate through the user document to update it's fields
+    Object.keys(validatedBody).forEach((updateField) => {
+
+      user[updateField] = validatedBody[updateField];
+
+      return false;
+
+    });
+
+    // Save the user
+    await user.save();
+
+    // And return it
     res.send(user);
 
   } catch (e) {
 
-    res.status(500).send();
+    handleHTTPErrors(e, res);
 
   }
 
@@ -98,11 +115,12 @@ exports.deleteOne = async ({ params }, res) => {
 
     const { id } = params;
 
+    // Find the user and delete it
     const user = await User.findByIdAndDelete(id);
 
     if (!user) {
 
-      res.status(404).send();
+      throw new NotFoundError('User');
 
     }
 
@@ -110,7 +128,7 @@ exports.deleteOne = async ({ params }, res) => {
 
   } catch (e) {
 
-    res.status(500).send();
+    handleHTTPErrors(e, res);
 
   }
 

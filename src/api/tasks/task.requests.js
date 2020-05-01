@@ -1,7 +1,8 @@
 const Joi = require('@hapi/joi');
+const { ValidationError } = require('../../errors/errorTypes');
 
 const createOneSchema = Joi.object({
-  description: Joi.string().required(),
+  description: Joi.string(),
   completed  : Joi.boolean()
 });
 
@@ -13,7 +14,7 @@ const validateCreateUpdateOneRequest = async (requestParam) => {
 
   } catch (error) {
 
-    throw new Error(error.details[0].message);
+    throw new ValidationError(error.details[0].message);
 
   }
 
