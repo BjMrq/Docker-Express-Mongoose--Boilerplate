@@ -5,7 +5,8 @@ const joi = require('@hapi/joi');
  */
 const envSchema = joi
   .object({
-    JWT_TOKEN: joi.string().required(),
+    JWT_SECRET     : joi.string().required(),
+    SENDGRID_SECRET: joi.string().required(),
   })
   .unknown()
   .required();
@@ -23,7 +24,8 @@ if (error) {
 
 const config = {
 
-  jwtToken: envVars.JWT_TOKEN,
+  jwtSecret     : envVars.JWT_SECRET,
+  sendGridSecret: envVars.SENDGRID_SECRET
 
 };
 

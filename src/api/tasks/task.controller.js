@@ -1,8 +1,7 @@
 
 const Task = require('../../models/Task/Task');
-const { validateCreateUpdateOneRequest } = require('./task.requests');
 const { NotFoundError } = require('../../errors/errorTypes');
-const { handleHTTPErrors } = require('../../errors/handleErrors');
+const handleHTTPErrors = require('../../errors/handleHTTPErrors');
 
 
 exports.getOne = async ({ params }, res) => {
@@ -11,7 +10,9 @@ exports.getOne = async ({ params }, res) => {
 
     const { id } = params;
 
-    const task = await Task.findById(id);
+    const task = await Task.findOne({
+      _id: id, isDeleted: false
+    });
 
     if (!task) {
 
@@ -29,13 +30,21 @@ exports.getOne = async ({ params }, res) => {
 
 };
 
-exports.getAll = async (req, res) => {
+exports.getAll = async ({ userFromRequest }, res) => {
 
   try {
 
-    const tasks = await Task.find();
+    const activeTasks = await Task.find({
+      owner: userFromRequest.id, isDeleted: false
+    });
 
-    res.send(tasks);
+    const deletedTasks = await Task.find({
+      owner: userFromRequest.id, isDeleted: true
+    });
+
+    res.send({
+      activeTasks, deletedTasks
+    });
 
 
   } catch (e) {
@@ -46,11 +55,13 @@ exports.getAll = async (req, res) => {
 
 };
 
-exports.createOne = async ({ body }, res) => {
+exports.createOne = async ({ body, userFromRequest }, res) => {
 
   try {
 
-    const newTask = await new Task(body).save();
+    const newTask = await new Task({
+      ...body, owner: userFromRequest.id
+    }).save();
 
     res.status(201).send(newTask);
 
@@ -62,17 +73,16 @@ exports.createOne = async ({ body }, res) => {
 
 };
 
-exports.updateOne = async ({ params, body }, res) => {
+exports.updateOne = async ({ params, body, userFromRequest }, res) => {
 
   try {
 
     const { id } = params;
 
-    // Validate the request body
-    const validatedBody = await validateCreateUpdateOneRequest(body);
-
     // Find the appropriate task
-    const task = await Task.findById(id);
+    const task = await Task.findOne({
+      id, owner: userFromRequest.id
+    });
 
     if (!task) {
 
@@ -82,9 +92,9 @@ exports.updateOne = async ({ params, body }, res) => {
     }
 
     // Iterate through the task document to update it's fields
-    Object.keys(validatedBody).forEach((updateField) => {
+    Object.keys(body).forEach((updateField) => {
 
-      task[updateField] = validatedBody[updateField];
+      task[updateField] = body[updateField];
 
       return false;
 
@@ -104,26 +114,32 @@ exports.updateOne = async ({ params, body }, res) => {
 
 };
 
-exports.deleteOne = async ({ params }, res) => {
+exports.deleteOne = async ({ params, userFromRequest }, res) => {
 
   try {
 
     const { id } = params;
 
-    // Find the task and delete it
-    const user = await Task.findByIdAndDelete(id);
+    // Find the appropriate task
+    const task = await Task.findOne({
+      _id: id, owner: userFromRequest.id
+    });
 
-    if (!user) {
+    if (!task) {
 
       throw new NotFoundError('Task');
 
     }
 
-    res.send(user);
+    // Set it as deleted
+    task.isDeleted = true;
+    task.save();
 
-  } catch (e) {
+    res.send();
 
-    handleHTTPErrors(e, res);
+  } catch (error) {
+
+    handleHTTPErrors(error, res);
 
   }
 

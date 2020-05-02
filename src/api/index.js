@@ -1,21 +1,20 @@
-require('dotenv').config();
+const express = require('express');
 const fs = require('fs');
 const path = require('path');
 
 const baseName = path.basename(__filename);
-let allConfig = {};
+
+const Router = new express.Router();
 
 fs.readdirSync(__dirname)
   .filter(file => file.indexOf('.') !== 0 && file !== baseName)
   .forEach((file) => {
 
-    const config = require(path.join(__dirname, file)); // eslint-disable-line
+    const router = require(path.join(__dirname, file)); // eslint-disable-line
 
-    allConfig = {
-      ...allConfig, ...config
-    };
+    Router.use(router);
 
 
   });
 
-module.exports = allConfig;
+module.exports = Router;

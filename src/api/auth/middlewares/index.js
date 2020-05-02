@@ -3,19 +3,19 @@ const fs = require('fs');
 const path = require('path');
 
 const baseName = path.basename(__filename);
-let allConfig = {};
+let allMiddlewares = {};
 
 fs.readdirSync(__dirname)
   .filter(file => file.indexOf('.') !== 0 && file !== baseName)
   .forEach((file) => {
 
-    const config = require(path.join(__dirname, file)); // eslint-disable-line
+    const middlewares = require(path.join(__dirname, file)); // eslint-disable-line
 
-    allConfig = {
-      ...allConfig, ...config
+    allMiddlewares = {
+      ...allMiddlewares, ...middlewares
     };
 
 
   });
 
-module.exports = allConfig;
+module.exports = allMiddlewares;

@@ -7,33 +7,45 @@
 GET {{baseUrl}}/users
 Accept: */*
 content-type: application/json
+Authorization: Bearer {{ user_jwt_token }}
 
 ### GET user (one)
-GET {{baseUrl}}/users/5eac847df37452239fb0296b
+GET {{baseUrl}}/users/5eadbde75d532b725a184179
 Accept: */*
 content-type: application/json
+Authorization: Bearer {{ user_jwt_token }}
+
+### GET user (profile)
+GET {{baseUrl}}/users/profile
+Accept: */*
+content-type: application/json
+Authorization: Bearer {{ user_jwt_token }}
 
 ### POST users (create)
 POST {{baseUrl}}/users
 Accept: */*
-content-type: application/json 
+content-type: application/json
 
 {
-    "name": "sample"
+    "name": "user",
+    "email": "emailcom@gmail.com",
+    "password": "isUser@1"
 }
 
 ### PATCH users (update)
-PATCH {{baseUrl}}/users/5eac847df37452239fb0296b
+PATCH {{baseUrl}}/users/5eadca0771aca401be323976
 Accept: */*
-content-type: application/json 
+content-type: application/json
+Authorization: Bearer {{ admin_jwt_token }}
 
 {
     "name": "losaasss",
-    "email": "email@gmail.com",
+    "email": "emsssail@gmail.com",
     "password": "susper@Difsficultpasssw00rd"
 }
 
 ### Delete users (destroy)
-DELETE {{baseUrl}}/users/5eaa027790516702c6d8289b
+DELETE {{baseUrl}}/users/5ead772d4e121c00295d887b
 Accept: */*
 content-type: application/json
+Authorization: Bearer {{ user_jwt_token }}

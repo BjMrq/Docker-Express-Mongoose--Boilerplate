@@ -1,7 +1,6 @@
 const express = require('express');
-const userRouter = require('../api/users');
-const taskRouter = require('../api/tasks');
-const authRouter = require('../api/auth');
+const appRouter = require('../api');
+const { logRequests } = require('../globalMiddlewares');
 
 // Create app
 const app = express();
@@ -9,9 +8,10 @@ const app = express();
 // Use json for api
 app.use(express.json());
 
-// Register routers
-app.use(userRouter);
-app.use(authRouter);
-app.use(taskRouter);
+// Apply middlewares actionable on all routes of the app
+app.use(logRequests);
+
+// Apply global router
+app.use(appRouter);
 
 module.exports = { app };

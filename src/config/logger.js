@@ -34,7 +34,7 @@ if (isDevelopment) {
     level   : 'error'
   }));
 
-  logger.add(winston.transports.File({ filename: 'combined.log' }));
+  logger.add(winston.transports.File({ filename: `${appRoot}/logs/combined.log` }));
 
 }
 

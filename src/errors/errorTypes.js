@@ -31,6 +31,28 @@ class LoginError extends Error {
 
 }
 
+class NotAuthenticatedError extends Error {
+
+  constructor() {
+
+    super('You need to be authenticated to perform this action');
+    this.name = 'NotAuthenticatedError';
+
+  }
+
+}
+
+class NotAuthorizeError extends Error {
+
+  constructor() {
+
+    super('You are not authorize to perform this action');
+    this.name = 'NotAuthorizeError';
+
+  }
+
+}
+
 module.exports = {
-  ValidationError, NotFoundError, LoginError
+  ValidationError, NotFoundError, LoginError, NotAuthenticatedError, NotAuthorizeError
 };

@@ -1,29 +1,36 @@
-
 const User = require('../../models/User/User');
-const { validateCreateUpdateOneRequest } = require('./user.requests');
 const { NotFoundError } = require('../../errors/errorTypes');
-const { handleHTTPErrors } = require('../../errors/handleErrors');
+const handleHTTPErrors = require('../../errors/handleHTTPErrors');
+const { sendWelcomeEmail, sendCancellationEmail } = require('../../emails');
 
+// The user the the parameter comes from the isAuthenticated middleware
+exports.getProfile = async ({ userFromRequest }, res) => {
 
-exports.getOne = async ({ params }, res) => {
+  res.send(userFromRequest);
+
+};
+
+// The id the the parameter comes from the isSelfOrAdmin middleware
+exports.getOne = async ({ id }, res) => {
 
   try {
 
-    const { id } = params;
-
+    // Get the user
     const user = await User.findById(id);
 
     if (!user) {
 
+      // If no user is found throw a NotFoundError
       throw new NotFoundError('User');
 
     }
 
+    // Send it
     res.send(user);
 
-  } catch (e) {
+  } catch (error) {
 
-    handleHTTPErrors(e, res);
+    handleHTTPErrors(error, res);
 
   }
 
@@ -33,14 +40,14 @@ exports.getAll = async (req, res) => {
 
   try {
 
+    // Get all the users
     const users = await User.find();
 
     res.send(users);
 
+  } catch (error) {
 
-  } catch (e) {
-
-    handleHTTPErrors(e, res);
+    handleHTTPErrors(error, res);
 
   }
 
@@ -50,31 +57,27 @@ exports.createOne = async ({ body }, res) => {
 
   try {
 
-    // Validate the request body
-    const validatedBody = await validateCreateUpdateOneRequest(body);
-
     // Create new user
-    const newUser = await new User(validatedBody).save();
+    const newUser = await new User(body).save();
+
+    // Send welcome email
+    sendWelcomeEmail(newUser.email, newUser.name);
 
     // And send it back
     res.status(201).send(newUser);
 
-  } catch (e) {
+  } catch (error) {
 
-    handleHTTPErrors(e, res);
+    handleHTTPErrors(error, res);
 
   }
 
 };
 
-exports.updateOne = async ({ params, body }, res) => {
+// The id the the parameter comes from the isSelfOrAdmin middleware
+exports.updateOne = async ({ id, body }, res) => {
 
   try {
-
-    const { id } = params;
-
-    // Validate the request body
-    const validatedBody = await validateCreateUpdateOneRequest(body);
 
     // Find the appropriate user
     const user = await User.findById(id);
@@ -87,9 +90,9 @@ exports.updateOne = async ({ params, body }, res) => {
     }
 
     // Iterate through the user document to update it's fields
-    Object.keys(validatedBody).forEach((updateField) => {
+    Object.keys(body).forEach((updateField) => {
 
-      user[updateField] = validatedBody[updateField];
+      user[updateField] = body[updateField];
 
       return false;
 
@@ -101,22 +104,24 @@ exports.updateOne = async ({ params, body }, res) => {
     // And return it
     res.send(user);
 
-  } catch (e) {
+  } catch (error) {
 
-    handleHTTPErrors(e, res);
+    handleHTTPErrors(error, res);
 
   }
 
 };
 
-exports.deleteOne = async ({ params }, res) => {
+// The id the the parameter comes from the isSelfOrAdmin middleware
+exports.deleteOne = async ({ id }, res) => {
 
   try {
 
-    const { id } = params;
-
     // Find the user and delete it
     const user = await User.findByIdAndDelete(id);
+
+    // Send cancellation email
+    sendCancellationEmail(user.email, user.name);
 
     if (!user) {
 
@@ -126,9 +131,9 @@ exports.deleteOne = async ({ params }, res) => {
 
     res.send(user);
 
-  } catch (e) {
+  } catch (error) {
 
-    handleHTTPErrors(e, res);
+    handleHTTPErrors(error, res);
 
   }
 

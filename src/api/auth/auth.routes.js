@@ -1,9 +1,13 @@
 const express = require('express');
+const { validateLoginRequest } = require('./middlewares');
+const { isAuthenticated } = require('../../globalMiddlewares');
 const controller = require('./auth.controller');
 
-const userRouter = new express.Router();
+const authRouter = new express.Router();
 
-userRouter
-  .post('/login', controller.logIn);
+authRouter
+  .post('/login', validateLoginRequest, controller.logIn)
+  .post('/logout', isAuthenticated, controller.logOut)
+  .post('/logoutAll', isAuthenticated, controller.logOutAll);
 
-module.exports = userRouter;
+module.exports = authRouter;

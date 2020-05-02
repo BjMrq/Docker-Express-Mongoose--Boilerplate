@@ -27,14 +27,8 @@ module.exports = {
       "warn",
       "single"
     ],
-    // Padding and spacing
-    "lines-around-comment": ["warn", { 
-      "beforeBlockComment": true, 
-      "beforeLineComment": true 
-    }],
-    "eol-last": "warn",
-    "no-empty": "warn",
-    "no-multiple-empty-lines": "warn",
+    // Spacing
+    "space-in-parens": "warn",
     "keyword-spacing": "warn",
     "no-trailing-spaces": "warn",
     "space-before-blocks": "warn",
@@ -54,6 +48,14 @@ module.exports = {
         "ignoreEOLComments": true
       }
     ],
+    // Padding
+    "lines-around-comment": ["warn", { 
+      "beforeBlockComment": true, 
+      "beforeLineComment": true 
+    }],
+    "eol-last": "warn",
+    "no-empty": "warn",
+    "no-multiple-empty-lines": "warn",
     "newline-per-chained-call": [
       "warn",
       {
@@ -70,6 +72,7 @@ module.exports = {
         "blankLine": "always",
         "prev": "*",
         "next": [
+          "cjs-export",
           "return",
           "if"
         ]
@@ -116,7 +119,8 @@ module.exports = {
     ],
     "indent": [
       "warn",
-      2
+      2,
+      {"SwitchCase": 1}
     ],
     "comma-spacing": [
       "warn",
