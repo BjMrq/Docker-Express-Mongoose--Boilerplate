@@ -10,6 +10,7 @@ const envSchema = joi
       'production',
       'test'
     ),
+    CLIENT_URL : joi.string(),
     PORT       : joi.number(),
     API_VERSION: joi.number(),
   })
@@ -30,6 +31,7 @@ if (error) {
 const config = {
 
   appName      : envVars.APP_NAME,
+  clientUrl    : envVars.CLIENT_URL || 'http://localhost',
   env          : envVars.NODE_ENV,
   isTest       : envVars.NODE_ENV === 'test',
   isDevelopment: envVars.NODE_ENV === 'development',

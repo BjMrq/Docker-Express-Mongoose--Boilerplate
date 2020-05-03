@@ -1,6 +1,6 @@
 const express = require('express');
 const appRouter = require('api');
-const { logRequests } = require('globalMiddlewares');
+const { logRequests, cors } = require('globalMiddlewares');
 
 // Create app
 const app = express();
@@ -9,7 +9,8 @@ const app = express();
 app.use(express.json());
 
 // Apply middlewares actionable on all routes of the app
-app.use(logRequests);
+app.use(logRequests); // Log every logRequests
+app.use(cors); // Allow cors
 
 // Apply global router
 app.use(appRouter);
