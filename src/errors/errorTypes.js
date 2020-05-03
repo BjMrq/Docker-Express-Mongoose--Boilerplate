@@ -53,6 +53,22 @@ class NotAuthorizeError extends Error {
 
 }
 
+class EmailNotSentError extends Error {
+
+  constructor(message) {
+
+    super(`Email could not been sent: ${message}`);
+    this.name = 'EmailNotSentError';
+
+  }
+
+}
+
 module.exports = {
-  ValidationError, NotFoundError, LoginError, NotAuthenticatedError, NotAuthorizeError
+  ValidationError,
+  NotFoundError,
+  LoginError,
+  NotAuthenticatedError,
+  NotAuthorizeError,
+  EmailNotSentError
 };
