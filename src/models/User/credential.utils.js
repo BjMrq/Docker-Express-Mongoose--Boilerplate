@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { jwtSecret } = require('../../config/variables');
-const { LoginError } = require('./../../errors/errorTypes');
+const { jwtSecret } = require('config/variables');
+const { LoginError } = require('errors');
 
 
 async function hashPassword(next) {

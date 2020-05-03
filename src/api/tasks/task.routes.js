@@ -1,6 +1,6 @@
 const express = require('express');
 const { validateRequest } = require('./middlewares');
-const { isAuthenticated } = require('../../globalMiddlewares');
+const { isAuthenticated } = require('globalMiddlewares');
 const controller = require('./task.controller');
 
 const taskRouter = new express.Router();

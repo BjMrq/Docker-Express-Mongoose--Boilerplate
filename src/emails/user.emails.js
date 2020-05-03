@@ -1,11 +1,9 @@
 const sgMail = require('@sendgrid/mail');
-const { sendGridSecret } = require('../config/variables');
-const { EmailNotSentError } = require('../errors/errorTypes');
-const errorEmitter = require('../errors/errorEmitter');
+const { sendGridSecret } = require('config/variables');
+const { EmailNotSentError, errorEmitter, errorEvent } = require('errors');
 
 sgMail.setApiKey(sendGridSecret);
 
-console.log('EMAIL SET UP ****************');
 const sender = emailClient => ({
   async sendWelcomeEmail(email, name) {
 
@@ -21,7 +19,7 @@ const sender = emailClient => ({
 
     } catch (error) {
 
-      errorEmitter.emit('error', new EmailNotSentError(error));
+      errorEmitter.emit(errorEvent, new EmailNotSentError(error));
 
     }
 
@@ -40,7 +38,7 @@ const sender = emailClient => ({
 
     } catch (error) {
 
-      errorEmitter.emit('error', new EmailNotSentError(error));
+      errorEmitter.emit(errorEvent, new EmailNotSentError(error));
 
     }
 

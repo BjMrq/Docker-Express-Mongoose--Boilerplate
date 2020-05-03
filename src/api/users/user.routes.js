@@ -1,6 +1,6 @@
 const express = require('express');
 const controller = require('./user.controller');
-const { isAuthenticated } = require('../../globalMiddlewares');
+const { isAuthenticated } = require('globalMiddlewares');
 const { validateRequest, isSelfOrAdmin } = require('./middlewares');
 
 

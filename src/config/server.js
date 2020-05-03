@@ -1,6 +1,6 @@
 const express = require('express');
-const appRouter = require('../api');
-const { logRequests } = require('../globalMiddlewares');
+const appRouter = require('api');
+const { logRequests } = require('globalMiddlewares');
 
 // Create app
 const app = express();

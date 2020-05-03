@@ -1,5 +1,5 @@
 const Joi = require('@hapi/joi');
-const { ValidationError } = require('../../../errors/errorTypes');
+const { ValidationError, errorEmitter, errorEvent } = require('errors');
 
 const loginSchema = Joi.object({
   email: Joi
@@ -21,7 +21,9 @@ const validateLoginRequest = async ({ body }, res, next) => {
 
   } catch (error) {
 
-    throw new ValidationError(error.details[0].message);
+    const validationError = new ValidationError(error.details[0].message);
+
+    errorEmitter.emit(errorEvent, validationError, res);
 
   }
 

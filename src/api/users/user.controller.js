@@ -1,7 +1,6 @@
-const User = require('../../models/User/User');
-const { NotFoundError } = require('../../errors/errorTypes');
-const errorEmitter = require('../../errors/errorEmitter');
-const { sendWelcomeEmail, sendCancellationEmail } = require('../../emails/user.emails');
+const User = require('models/User/User');
+const { NotFoundError, errorEmitter, errorEvent } = require('errors');
+const { sendWelcomeEmail, sendCancellationEmail } = require('emails/user.emails');
 
 // The user the the parameter comes from the isAuthenticated middleware
 exports.getProfile = async ({ userFromRequest }, res) => {
@@ -30,7 +29,7 @@ exports.getOne = async ({ id }, res) => {
 
   } catch (error) {
 
-    errorEmitter.emit('error', error, res);
+    errorEmitter.emit(errorEvent, error, res);
 
   }
 
@@ -47,7 +46,7 @@ exports.getAll = async (req, res) => {
 
   } catch (error) {
 
-    errorEmitter.emit('error', error, res);
+    errorEmitter.emit(errorEvent, error, res);
 
   }
 
@@ -68,7 +67,7 @@ exports.createOne = async ({ body }, res) => {
 
   } catch (error) {
 
-    errorEmitter.emit('error', error, res);
+    errorEmitter.emit(errorEvent, error, res);
 
   }
 
@@ -106,7 +105,7 @@ exports.updateOne = async ({ id, body }, res) => {
 
   } catch (error) {
 
-    errorEmitter.emit('error', error, res);
+    errorEmitter.emit(errorEvent, error, res);
 
   }
 
@@ -133,7 +132,7 @@ exports.deleteOne = async ({ id }, res) => {
 
   } catch (error) {
 
-    errorEmitter.emit('error', error, res);
+    errorEmitter.emit(errorEvent, error, res);
 
   }
 

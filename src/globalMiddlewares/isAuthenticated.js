@@ -1,12 +1,12 @@
 const jwt = require('jsonwebtoken');
-const User = require('../models/User/User');
-const { NotAuthenticatedError } = require('../errors/errorTypes');
-const errorEmitter = require('../errors/errorEmitter');
-const { jwtSecret } = require('../config/variables');
+const User = require('models/User/User');
+const { NotAuthenticatedError, errorEmitter, errorEvent } = require('errors');
+const { jwtSecret } = require('config/variables');
 
 exports.isAuthenticated = async (req, res, next) => {
 
   try {
+
 
     // Get the bearer token
     const token = req.header('Authorization').replace('Bearer ', '');
@@ -35,7 +35,7 @@ exports.isAuthenticated = async (req, res, next) => {
 
   } catch {
 
-    errorEmitter.emit('error', new NotAuthenticatedError(), res);
+    errorEmitter.emit(errorEvent, new NotAuthenticatedError(), res);
 
   }
 

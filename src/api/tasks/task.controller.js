@@ -1,8 +1,6 @@
 
-const Task = require('../../models/Task/Task');
-const { NotFoundError } = require('../../errors/errorTypes');
-const errorEmitter = require('../../errors/errorEmitter');
-
+const Task = require('models/Task/Task');
+const { NotFoundError, errorEmitter, errorEvent } = require('errors');
 
 exports.getOne = async ({ params }, res) => {
 
@@ -24,7 +22,7 @@ exports.getOne = async ({ params }, res) => {
 
   } catch (error) {
 
-    errorEmitter.emit('error', error, res);
+    errorEmitter.emit(errorEvent, error, res);
 
   }
 
@@ -49,7 +47,7 @@ exports.getAll = async ({ userFromRequest }, res) => {
 
   } catch (error) {
 
-    errorEmitter.emit('error', error, res);
+    errorEmitter.emit(errorEvent, error, res);
 
   }
 
@@ -67,7 +65,7 @@ exports.createOne = async ({ body, userFromRequest }, res) => {
 
   } catch (error) {
 
-    errorEmitter.emit('error', error, res);
+    errorEmitter.emit(errorEvent, error, res);
 
   }
 
@@ -108,7 +106,7 @@ exports.updateOne = async ({ params, body, userFromRequest }, res) => {
 
   } catch (error) {
 
-    errorEmitter.emit('error', error, res);
+    errorEmitter.emit(errorEvent, error, res);
 
   }
 
@@ -139,7 +137,7 @@ exports.deleteOne = async ({ params, userFromRequest }, res) => {
 
   } catch (error) {
 
-    errorEmitter.emit('error', error, res);
+    errorEmitter.emit(errorEvent, error, res);
 
   }
 

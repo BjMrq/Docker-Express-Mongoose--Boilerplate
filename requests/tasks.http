@@ -39,6 +39,7 @@ DELETE {{baseUrl}}/tasks/5eadd21b2521b87df65d4e1d
 Accept: */*
 content-type: application/json
 Authorization: Bearer {{ user_jwt_token }}
+
 {
     "restore": true
 }

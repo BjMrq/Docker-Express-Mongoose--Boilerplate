@@ -1,4 +1,4 @@
-const Task = require('../Task/Task');
+const Task = require('models/Task/Task');
 
 async function deletesUsersTasks(next) {
 

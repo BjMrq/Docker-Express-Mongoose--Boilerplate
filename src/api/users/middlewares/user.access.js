@@ -1,5 +1,4 @@
-const { NotAuthorizeError } = require('../../../errors/errorTypes');
-const errorEmitter = require('../../../errors/errorEmitter');
+const { NotAuthorizeError, errorEmitter, errorEvent } = require('errors');
 
 const isSelfOrAdmin = async (req, res, next) => {
 
@@ -24,7 +23,7 @@ const isSelfOrAdmin = async (req, res, next) => {
 
   } catch {
 
-    errorEmitter.emit('error', new NotAuthorizeError());
+    errorEmitter.emit(errorEvent, new NotAuthorizeError());
 
   }
 

@@ -1,6 +1,5 @@
 const Joi = require('@hapi/joi');
-const { ValidationError } = require('../../../errors/errorTypes');
-const errorEmitter = require('../../../errors/errorEmitter');
+const { ValidationError, errorEmitter, errorEvent } = require('errors');
 
 const createOneSchema = Joi.object({
   description: Joi.string(),
@@ -17,9 +16,9 @@ const validateRequest = async ({ body }, res, next) => {
 
   } catch (error) {
 
-    const validationError = new ValidationError(error.details[0].message,);
+    const validationError = new ValidationError(error.details[0].message);
 
-    errorEmitter.emit('error', validationError, res);
+    errorEmitter.emit(errorEvent, validationError, res);
 
   }
 

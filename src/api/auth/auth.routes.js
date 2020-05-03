@@ -1,6 +1,6 @@
 const express = require('express');
 const { validateLoginRequest } = require('./middlewares');
-const { isAuthenticated } = require('../../globalMiddlewares');
+const { isAuthenticated } = require('globalMiddlewares');
 const controller = require('./auth.controller');
 
 const authRouter = new express.Router();

@@ -1,4 +1,4 @@
-const logger = require('../config/logger');
+const logger = require('config/logger');
 
 const handleHTTPErrors = (error, res) => {
 
