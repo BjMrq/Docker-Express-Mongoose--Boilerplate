@@ -10,6 +10,14 @@ module.exports = {
   plugins: [
     'eslint-plugin',
   ],
+  settings: {
+    'import/resolver':{
+      node:{
+        extensions: ['.js'],
+        moduleDirectory: ['node_modules', './src']
+      }
+    }
+  },
   "rules": {
     "max-len": [
       "warn",
@@ -21,7 +29,7 @@ module.exports = {
         "ignoreTemplateLiterals": true
       }
     ],
-    "import/no-unresolved": "off",
+    // "import/no-unresolved": "off",
     "import/prefer-default-export": "off",
     "no-console": "off",
     "quotes": [
