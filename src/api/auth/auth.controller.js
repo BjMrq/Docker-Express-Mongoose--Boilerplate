@@ -1,6 +1,6 @@
 
 const User = require('../../models/User/User');
-const handleHTTPErrors = require('../../errors/handleHTTPErrors');
+const errorEmitter = require('../../errors/errorEmitter');
 
 exports.logIn = async ({ body }, res) => {
 
@@ -19,7 +19,7 @@ exports.logIn = async ({ body }, res) => {
 
   } catch (error) {
 
-    handleHTTPErrors(error, res);
+    errorEmitter.emit('error', error, res);
 
   }
 
@@ -36,7 +36,7 @@ exports.logOut = async ({ userFromRequest, token }, res) => {
 
   } catch (error) {
 
-    handleHTTPErrors(error, res);
+    errorEmitter.emit('error', error, res);
 
   }
 
@@ -53,7 +53,7 @@ exports.logOutAll = async ({ userFromRequest }, res) => {
 
   } catch (error) {
 
-    handleHTTPErrors(error, res);
+    errorEmitter.emit('error', error, res);
 
   }
 

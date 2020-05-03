@@ -1,10 +1,6 @@
 const logger = require('../config/logger');
-const errorEmitter = require('./errorEmitter');
 
 const handleHTTPErrors = (error, res) => {
-
-  // Every error are logged
-  errorEmitter.emit('error', error);
 
   switch (error.name) {
 

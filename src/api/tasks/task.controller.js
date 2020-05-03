@@ -1,7 +1,7 @@
 
 const Task = require('../../models/Task/Task');
 const { NotFoundError } = require('../../errors/errorTypes');
-const handleHTTPErrors = require('../../errors/handleHTTPErrors');
+const errorEmitter = require('../../errors/errorEmitter');
 
 
 exports.getOne = async ({ params }, res) => {
@@ -22,9 +22,9 @@ exports.getOne = async ({ params }, res) => {
 
     res.send(task);
 
-  } catch (e) {
+  } catch (error) {
 
-    handleHTTPErrors(e, res);
+    errorEmitter.emit('error', error, res);
 
   }
 
@@ -47,9 +47,9 @@ exports.getAll = async ({ userFromRequest }, res) => {
     });
 
 
-  } catch (e) {
+  } catch (error) {
 
-    handleHTTPErrors(e, res);
+    errorEmitter.emit('error', error, res);
 
   }
 
@@ -65,9 +65,9 @@ exports.createOne = async ({ body, userFromRequest }, res) => {
 
     res.status(201).send(newTask);
 
-  } catch (e) {
+  } catch (error) {
 
-    handleHTTPErrors(e, res);
+    errorEmitter.emit('error', error, res);
 
   }
 
@@ -106,9 +106,9 @@ exports.updateOne = async ({ params, body, userFromRequest }, res) => {
     // And return it
     res.send(task);
 
-  } catch (e) {
+  } catch (error) {
 
-    handleHTTPErrors(e, res);
+    errorEmitter.emit('error', error, res);
 
   }
 
@@ -139,7 +139,7 @@ exports.deleteOne = async ({ params, userFromRequest }, res) => {
 
   } catch (error) {
 
-    handleHTTPErrors(error, res);
+    errorEmitter.emit('error', error, res);
 
   }
 
