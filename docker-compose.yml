@@ -10,7 +10,7 @@ services:
       - mongo
     env_file: .env
     ports:
-      - 80:3000
+      - 80:${PORT}
       - 9229:9229
     volumes:
       - .:/node/app
@@ -31,7 +31,7 @@ services:
     volumes:
       - dbdata:/data/db
     ports:
-      - "27017:27017"
+      - 27017:${MONGO_PORT}
     networks:
       - containers_net
 
