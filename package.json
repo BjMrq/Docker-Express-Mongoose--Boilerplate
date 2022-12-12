@@ -17,7 +17,7 @@
     "bcryptjs": "^2.4.3",
     "dotenv": "8.2.0",
     "eslint-import-resolver-node": "^0.3.3",
-    "express": "4.17.1",
+    "express": "4.17.3",
     "hbs": "^4.1.0",
     "install": "^0.13.0",
     "joi-password-complexity": "^4.1.0",
